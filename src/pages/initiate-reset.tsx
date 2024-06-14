@@ -1,18 +1,38 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
+import {useState} from "react";
 import * as Yup from "yup";
+import {useRouter} from "next/router";
+import axios from "axios";
+import {toast,Toaster} from "react-hot-toast";
+import PasswordResetInitiatedSuccess from "@/components/PasswordResetInitiated";
 function ForgotPassword() {
+  const router = useRouter();
+  const [changeContent,setChangeContent] = useState(false);
+  const handleSubmit = (values,setSubmitting)=>{
+    axios
+    .post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/initiate-reset-password`, values,{
+      headers:{
+          "Content-Type":"application/json"
+      }
+    })
+    .then((d) => {
+        toast.success("Initiated Reset");
+        console.log(d);
+        setChangeContent(true);
+    }).catch(err => {
+      toast.error(err.response.data.message);
+      console.log(err)
+    });
+  }
   return (
     <div className="flex flex-col w-full items-center h-screen justify-center">
-      <Formik
+      {!changeContent ? <Formik
         initialValues={{ email: "" }}
         validationSchema={Yup.object({
           email: Yup.string().email().required(),
         })}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            console.log(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+          handleSubmit(values, setSubmitting);
         }}
       >
        {formik => ( <Form className="w-full flex flex-col items-center  h-screen justify-center">
@@ -46,7 +66,7 @@ function ForgotPassword() {
                 Initiate Reset
               </button>
         </Form>)}
-      </Formik>
+      </Formik>: <PasswordResetInitiatedSuccess />}
     </div>
   );
 }

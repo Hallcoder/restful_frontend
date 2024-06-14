@@ -1,9 +1,11 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import Link from "next/link";
+import {useRouter} from "next/router";
 import * as Yup from "yup";
 import axios from "axios";
 import { toast, Toaster } from "react-hot-toast";
 function Login() {
+  const router = useRouter();
   const validationSchema = Yup.object({
     email: Yup.string()
       .email("Invalid email address")
@@ -15,7 +17,7 @@ function Login() {
   const handleSubmit = (values, setSubmitting) => {
     console.log(values);
     axios
-      .post("http://localhost:3000/auth/login", values,{
+      .post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/login`, values,{
         headers:{
             "Content-Type":"application/json"
         }
@@ -23,6 +25,8 @@ function Login() {
       .then((d) => {
           toast.success("Logged In!");
           console.log(d);
+          localStorage.setItem("token",d.data.token);
+          router.push("/")
       }).catch(err => {
         toast.error(err.response.data.message);
         console.log(err)
@@ -79,7 +83,7 @@ function Login() {
                   className="text-red-600 text-sm mt-1"
                 />
                 <Link
-                  href="/forgot-password"
+                  href="/initiate-reset"
                   className="text-blue-600 m-1 text-sm font-semibold cursor-pointer"
                 >
                   Forgot Password?

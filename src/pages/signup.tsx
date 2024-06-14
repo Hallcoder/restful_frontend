@@ -18,7 +18,7 @@ function Signup() {
   const handleSubmit = (values, setSubmitting) => {
     console.log(values);
     axios
-      .post("http://localhost:3000/user/register", values,{
+      .post(`${process.env.BACKEND_API_URL}/user/register`, values,{
         headers:{
             "Content-Type":"application/json"
         }
