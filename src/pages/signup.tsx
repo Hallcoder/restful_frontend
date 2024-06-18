@@ -1,9 +1,11 @@
 import axios from "axios";
 import { Form, Formik, ErrorMessage, Field } from "formik";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import * as Yup from "yup";
+import rca from "../../public/assets/images/rca.png"
 function Signup() {
   const validationSchema = Yup.object({
     firstName: Yup.string().required("This field is required"),
@@ -38,6 +40,7 @@ function Signup() {
   return (
     <div className="flex items-center justify-center min-h-screen flex-col">
       <main className="w-6/12 flex-col flex items-center">
+        <Image src={rca} alt="RCA logo" />
         <h2 className="text-2xl font-semibold text-gray-700">Sign Up</h2>
         <Formik
           initialValues={{ name:"", email: "", password: "" }}

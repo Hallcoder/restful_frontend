@@ -3,7 +3,9 @@ import Link from "next/link";
 import {useRouter} from "next/router";
 import * as Yup from "yup";
 import axios from "axios";
+import rca from "../../public/assets/images/rca.png";
 import { toast, Toaster } from "react-hot-toast";
+import Image from "next/image";
 function Login() {
   const router = useRouter();
   const validationSchema = Yup.object({
@@ -39,6 +41,7 @@ function Login() {
     <div className="flex items-center justify-center min-h-screen flex-col">
       <Toaster />
       <main className="w-6/12 flex-col flex items-center">
+      <Image src={rca} alt="RCA logo" />
         <h2 className="text-2xl font-semibold text-gray-700">Log In</h2>
         <Formik
           initialValues={{ email: "", password: "" }}
