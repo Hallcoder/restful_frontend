@@ -9,15 +9,18 @@ const roboto = Roboto({
   subsets: ["latin"],
 });
 function MyApp({ Component, pageProps }) {
-  return (
-    <main className={roboto.className}>
-      <RecoilRoot>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-      </RecoilRoot>
+    const excludeLayout = Component.excludeLayout || false;
+
+return excludeLayout ? 
+(
+  <Component {...pageProps} />
+) : (
+  <main className={roboto.className}>
+  <Layout>
+    <Component {...pageProps} />
+  </Layout>
     </main>
-  );
+)
 }
 
 export default MyApp;

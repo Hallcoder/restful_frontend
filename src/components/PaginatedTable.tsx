@@ -1,9 +1,14 @@
 // src/components/PaginatedTable.js
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import { useTable, usePagination, useGlobalFilter } from 'react-table';
-import ReactPaginate from 'react-paginate';
 
 const PaginatedTable = ({ columns, data }) => {
+  const globalFilterByName = (rows, columnIds, filterValue) => {
+    return rows.filter(row => {
+      const name = row.original.name; // Adjust this to the column you want to filter by
+      return name.toLowerCase().includes(filterValue.toLowerCase());
+    });
+  };
   const {
     getTableProps,
     getTableBodyProps,
@@ -23,23 +28,24 @@ const PaginatedTable = ({ columns, data }) => {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 5 }, // Change this based on your need
+      initialState: { pageIndex: 0, pageSize: 5 }, 
+      globalFilter:globalFilterByName// Change this based on your need
     },
     useGlobalFilter,
     usePagination
   );
 
   return (
-    <div className="container mx-auto p-4 w-9/12 m-4">
+    <div className="container mx-auto p-9 w-9/12 m-4">
       <div className="mb-4 flex items-center justify-between">
         <input
           className="p-2 border border-gray-300 rounded"
           value={globalFilter || ''}
           onChange={e => setGlobalFilter(e.target.value)}
-          placeholder="Search..."
+          placeholder="Search by name..."
         />
       </div>
-      <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
+      <table {...getTableProps()} className="min-w-full divide-y divide-x divide-gray-400">
         <thead className="bg-gray-50">
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>

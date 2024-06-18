@@ -45,9 +45,6 @@ const Users = () => {
 
     return (
         <div className="App">
-            <button onClick={openModal} className="mb-4 px-4 py-2 bg-blue-500 text-white rounded">
-                Add New Item
-            </button>
             <ModalRoot /> {/* Ensure ModalRoot is rendered */}
             <PaginatedTable columns={columns} data={data}/>
             <Modal isOpen={isModalOpen} onClose={closeModal}>

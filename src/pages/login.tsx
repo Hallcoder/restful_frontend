@@ -12,9 +12,10 @@ function Login() {
       .required("Email is required"),
     password: Yup.string()
       .required("Password is required")
-      .min(6, "Password must be at least 6 characters"),
+      .min(5, "Password must be at least 5 characters"),
   });
   const handleSubmit = (values, setSubmitting) => {
+    setSubmitting(true);
     console.log(values);
     axios
       .post(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/login`, values,{
@@ -26,12 +27,13 @@ function Login() {
           toast.success("Logged In!");
           console.log(d);
           localStorage.setItem("token",d.data.token);
-          router.push("/")
+          router.push("/books")
       }).catch(err => {
         toast.error(err.response.data.message);
         console.log(err)
+      }).finally(()=>{
+        setSubmitting(false);
       });
-    setSubmitting();
   };
   return (
     <div className="flex items-center justify-center min-h-screen flex-col">
@@ -112,5 +114,5 @@ function Login() {
     </div>
   );
 }
-
+Login.excludeLayout = true;
 export default Login;

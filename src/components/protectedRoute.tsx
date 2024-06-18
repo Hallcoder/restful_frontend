@@ -10,7 +10,7 @@ function ProtectedRoute({ children }) {
     if (token) {
       axios
         .get(
-          `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/currentUser/${token}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/auth/currentUser`,
           {
             headers: {
               "Content-Type": "application/json",

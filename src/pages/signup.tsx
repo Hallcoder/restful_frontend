@@ -6,19 +6,20 @@ import toast from "react-hot-toast";
 import * as Yup from "yup";
 function Signup() {
   const validationSchema = Yup.object({
-    name: Yup.string().required(),
+    firstName: Yup.string().required("This field is required"),
+    lastName: Yup.string().required("This field is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
     password: Yup.string()
       .required("Password is required")
-      .min(6, "Password must be at least 6 characters"),
+      .min(5, "Password must be at least 5 characters"),
   });
   const router = useRouter();
   const handleSubmit = (values, setSubmitting) => {
     console.log(values);
     axios
-      .post(`${process.env.BACKEND_API_URL}/user/register`, values,{
+      .post(`${process.env. NEXT_PUBLIC_BACKEND_API_URL}/user/register`, values,{
         headers:{
             "Content-Type":"application/json"
         }
@@ -49,18 +50,36 @@ function Signup() {
             <Form className="w-8/12 mx-auto mt-8">
               <div className="mb-4">
                 <label
-                  htmlFor="fullNames"
+                  htmlFor="firstName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Full Names
+                  First Name
                 </label>
                 <Field
-                  name="name"
+                  name="firstName"
                   type="text"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
                 <ErrorMessage
-                  name="name"
+                  name="firstName"
+                  component="div"
+                  className="text-red-600 text-sm mt-1"
+                />
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Last Name
+                </label>
+                <Field
+                  name="lastName"
+                  type="text"
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+                <ErrorMessage
+                  name="lastName"
                   component="div"
                   className="text-red-600 text-sm mt-1"
                 />
@@ -130,5 +149,5 @@ function Signup() {
     </div>
   );
 }
-
+Signup.excludeLayout = true;
 export default Signup;
